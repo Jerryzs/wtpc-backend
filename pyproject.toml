@@ -5,6 +5,7 @@ name = "wtpc-backend"
 version = "0.0.0"
 description=""
 [tool.poetry.dependencies]
+python = "^3.7"
 flask = "^1.0.2"
 mysql-connector-python = "^8.0.21"
 Flask-Cors = "^3.0.9"
