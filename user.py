@@ -3,7 +3,7 @@ from flask import abort, request
 from utils import Response, Conn, randstr, verify_session
 from google.oauth2 import id_token
 from google.auth.transport import requests
-from main import app
+from app import app
 
 # types
 from typing import Any, Dict, Mapping, Optional, Tuple, Union

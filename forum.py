@@ -1,6 +1,6 @@
 from flask import request
 from utils import Response, Conn
-from main import app
+from app import app
 
 @app.route("/forum", methods=["GET"])
 def forum():
