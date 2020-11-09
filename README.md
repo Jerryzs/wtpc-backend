@@ -58,7 +58,7 @@ None
        */
       "blocks": [
         {
-          "bid": number,
+          "id": number,
           "category": null | number, // category id
           "description": string,
           "icon": string, // url
