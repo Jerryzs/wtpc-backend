@@ -75,7 +75,8 @@ def user():
   if level:
     res["lv"] = level[0]
 
-  if verid := res["verify"]:
+  verid = res["verify"]
+  if verid:
     verify = conn.select("verify", where="`id` = %s", params=(verid,))
     if verify:
       res["verify"] = verify[0]
@@ -94,7 +95,8 @@ def auth():
     "newbie": False
   }
 
-  if ss := verify_session():
+  ss = verify_session()
+  if ss:
     return Response().data(res).session(ss.sid).get()
 
   token = str(request.form.get("token", ""))
@@ -102,7 +104,8 @@ def auth():
   if not token:
     return Response().fail().message("Missing token or session id.").get()
 
-  if info := verify_id_token(token):
+  info = verify_id_token(token)
+  if info:
     conn = Conn("auth")
 
     gid = str(info["sub"])
