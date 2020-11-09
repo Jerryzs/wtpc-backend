@@ -1,0 +1,15 @@
+[tool]
+[tool.poetry]
+authors = ["Jerry <zhangs@winchesterthurston.org>"]
+name = "wtpc-backend"
+version = "0.0.0"
+description=""
+[tool.poetry.dependencies]
+flask = "^1.0.2"
+python = "^3.8"
+mysql-connector-python = "^8.0.21"
+Flask-Cors = "^3.0.9"
+google-api-python-client = "^1.12.3"
+
+[tool.poetry.dev-dependencies]
+python-dotenv = "^0.15.0"
