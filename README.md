@@ -10,6 +10,7 @@
 - [User](#user)
   - [`/auth` POST](#auth-post)
   - [`/user` GET](#user-get)
+  - [`/user` POST](#user-post)
 
 ## Documentation
 
@@ -195,4 +196,25 @@ Optional
     "text_color": null | string // hex color code
   }
 }
+```
+
+#### `/user` POST
+
+Update the record of the current session user.
+
+- Only certain keys are allowed to be updated:
+  ```json
+  [ "name", "bio", "picture", "user_page" ]
+  ```
+
+**Parameters**
+
+Required (form)
+
+- `<key>` (string): the new value of this key, accepts multiple
+
+**Response**
+
+```typescript
+{}
 ```
