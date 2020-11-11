@@ -25,6 +25,9 @@ def verify_id_token(token: str):
       print(e)
     return False
 
+def noauth():
+  return Response().data({ "empty": True }).message("Not signed in.").get()
+
 @app.route("/user", methods=["GET"])
 def user():
   session = verify_session()
@@ -35,7 +38,7 @@ def user():
   user_page: bool = bool(request.args.get("userpage", 0))
 
   if not uid and not name and not session:
-    return Response().data({ "empty": True }).message("Not signed in.").get()
+    return noauth()
 
   try:
     uid = int(uid)
