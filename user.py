@@ -65,7 +65,12 @@ def user():
     # session type cannot be None here
     condition = (str("`uid` = %s"), (session.uid,))
 
-  user = conn.select("user", cols=user_cols, where=f"{condition[0]} AND `gid` IS NOT NULL", params=condition[1])
+  user = conn.select(
+    "user",
+    cols=user_cols,
+    where=f"{condition[0]} AND `gid` IS NOT NULL",
+    params=condition[1]
+  )
 
   if not user:
     conn.close()
@@ -73,7 +78,12 @@ def user():
 
   res = user[0]
 
-  level = conn.select("level", cols=("id", "name", "color", "text_color"), where="`id` = %s", params=(res["lv"],))
+  level = conn.select(
+    "level",
+    cols=("id", "name", "color", "text_color"),
+    where="`id` = %s",
+    params=(res["lv"],)
+  )
 
   if level:
     res["lv"] = level[0]
