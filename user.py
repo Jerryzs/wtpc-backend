@@ -122,6 +122,34 @@ def user():
 
     return Response().get()
 
+@app.route("/user/check", methods=["GET"])
+def check():
+  name = request.args.get("name", "", str)
+  code = request.args.get("code", 0, int)
+
+  if not name:
+    return Response().fail().message("Not enough arguments.").get()
+
+  res = {
+    "available": False
+  }
+
+  conn = Conn("auth")
+
+  result = conn.select(
+    "user",
+    ("uid",),
+    "`name` = %s AND `code` = %s",
+    params=(name, code)
+  )
+
+  if not result:
+    res["available"] = True
+
+  conn.close()
+
+  return Response().data(res).get()
+
 @app.route("/auth", methods=["POST"])
 def auth():
   if request.method != "POST":

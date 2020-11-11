@@ -11,6 +11,7 @@
   - [`/auth` POST](#auth-post)
   - [`/user` GET](#user-get)
   - [`/user` POST](#user-post)
+  - [`/user/check` GET](#usercheck-get)
 
 ## Documentation
 
@@ -217,4 +218,26 @@ Required (form)
 
 ```typescript
 {}
+```
+
+#### `/user/check` GET
+
+Check the availability of a user name and code pair.
+
+**Parameters**
+
+Required
+
+- `name` (string): the user name to check for
+
+Optional
+
+- `code` (int): the user code paired with the `name`, default `0`
+
+**Response**
+
+```typescript
+{
+  "available": boolean
+}
 ```
