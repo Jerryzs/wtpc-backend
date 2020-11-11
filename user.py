@@ -8,6 +8,8 @@ from app import app
 # types
 from typing import Any, Dict, Mapping, Union
 
+MIN_USER_CODE = 1000
+
 def verify_id_token(token: str):
   try:
     idinfo: Mapping[str, Any] = id_token.verify_oauth2_token(
@@ -193,7 +195,7 @@ def auth():
 
       while True:
         userdata["code"] = int(randstr(4, "0123456789"))
-        if not userdata["code"] or userdata["code"] < 1000:
+        if not userdata["code"] or userdata["code"] < MIN_USER_CODE:
           continue
         result = conn.select(
           "user",
