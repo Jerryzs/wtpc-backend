@@ -6,7 +6,7 @@ from google.auth.transport import requests
 from app import app
 
 # types
-from typing import Any, Dict, Mapping, Optional, Tuple, Union
+from typing import Any, Dict, Mapping, Union
 
 def verify_id_token(token: str):
   try:
