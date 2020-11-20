@@ -185,9 +185,12 @@ def auth():
     if not len(user):
       res["newbie"] = True
 
+      name = str(info["given_name"])[:15]
+      name = name[:name.index(" ")]
+
       userdata: Dict[str, Union[str, int]] = {
         "gid": gid,
-        "name": str(info["given_name"]),
+        "name": name,
         "code": -1,
         "email": str(info["email"]),
         "picture": str(info["picture"])
