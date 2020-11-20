@@ -1,4 +1,4 @@
-import os
+import os, re
 import mysql.connector
 from datetime import datetime, timedelta, timezone
 from random import randrange
@@ -9,6 +9,21 @@ from typing import Any, Dict, Iterable, List, NamedTuple, NoReturn, Optional, Se
 from mysql.connector.connection import MySQLConnection
 from mysql.connector.cursor import CursorBase
 from mysql.connector.pooling import PooledMySQLConnection
+
+class RegexPatterns(NamedTuple):
+  url = re.compile(
+    r"^"
+    r"(?:https?://)?"
+    r"(?:"
+      r"(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+?"
+      r"(?:[a-z]{2,6}\.?){1,2}"
+      r"|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"
+    r")"
+    r"(?::\d+)?"
+    r"(?:/?|[/?]\S+)"
+    r"$",
+    re.IGNORECASE
+  )
 
 def randstr(length: int = 32, chars: Sequence = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_"):
   num = len(chars)
@@ -171,7 +186,7 @@ class Conn:
   ) -> NoReturn:
     cursor: CursorBase = self.__conn.cursor()
 
-    query = "DETELE FROM `{table}` WHERE {where}".format(
+    query = "DELETE FROM `{table}` WHERE {where}".format(
       table=table,
       where=where
     )
