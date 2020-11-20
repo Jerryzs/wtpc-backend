@@ -1,12 +1,12 @@
-import os
+import os, re
 from flask import abort, request
-from utils import Response, Conn, randstr, verify_session
+from utils import RegexPatterns, Response, Conn, randstr, verify_session
 from google.oauth2 import id_token
 from google.auth.transport import requests
 from app import app
 
 # types
-from typing import Any, Dict, Mapping, Union
+from typing import Any, Callable, Dict, Mapping, Optional, Union
 
 MIN_USER_CODE = 1000
 
@@ -108,14 +108,33 @@ def user():
     if not session:
       return noauth()
 
-    allowed = set([
-      "name", "bio", "picture", "user_page"
-    ])
+    class Validators():
+      def name(s: str) -> bool:
+        return bool(re.fullmatch(r"[a-zA-Z]{2,15}", s))
 
-    updates: Dict[str, str] = {
-      k: request.form.get(k, "", str)\
-        for k in filter(lambda k: k in allowed, request.form.keys())
+      def url(s: str) -> bool:
+        return bool(RegexPatterns.url.fullmatch(s))
+
+    allowed: Dict[str, Optional[Callable[[str], bool]]] = {
+      "name": Validators.name,
+      "bio": None,
+      "picture": Validators.url,
+      "user_page": None
     }
+
+    updates: Dict[str, str] = dict()
+
+    for k in request.form.keys():
+      if k not in allowed:
+        return Response().fail().message(f"Invalid Key: '{k}'").get()
+
+      update = request.form.get(k, "", type=str).strip()
+
+      if allowed[k] is not None:
+        if not allowed[k](update):
+          return Response().fail().message(f"Incorrect Format: '{update}'").get()
+
+      updates[k] = update
 
     if updates:
       conn = Conn("auth")
