@@ -204,6 +204,7 @@ Optional
 Update the record of the current session user.
 
 - Only certain keys are allowed to be updated:
+
   ```json
   [ "name", "bio", "picture", "user_page" ]
   ```
