@@ -112,11 +112,16 @@ def user():
       def name(s: str) -> bool:
         return bool(re.fullmatch(r"[a-zA-Z]{2,15}", s))
 
+      def code(s: str) -> bool:
+        s = int(s)
+        return not (s < MIN_USER_CODE or s > 9999)
+
       def url(s: str) -> bool:
         return bool(RegexPatterns.url.fullmatch(s))
 
     allowed: Dict[str, Optional[Callable[[str], bool]]] = {
       "name": Validators.name,
+      "code": Validators.code,
       "bio": None,
       "picture": Validators.url,
       "user_page": None
