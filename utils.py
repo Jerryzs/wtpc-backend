@@ -203,12 +203,15 @@ class Session(NamedTuple):
   uid: int
   sid: str
 
-def verify_session(token: Optional[str] = None) -> Optional[Session]:
+def verify_session(token: Optional[str] = None, reuse_conn: Optional[Conn] = None) -> Optional[Session]:
   if not token:
     token = request.cookies.get("__sid", None)
 
   if token:
-    conn = Conn("auth")
+    if not reuse_conn:
+      conn = Conn("auth")
+    else:
+      conn = reuse_conn
 
     sr = conn.select("session", ("uid", "last_request"), "`sid` = %s", params=(token,))
 
@@ -219,10 +222,13 @@ def verify_session(token: Optional[str] = None) -> Optional[Session]:
         conn.delete("session", "`sid` = %s", (token,))
       else:
         conn.update("session", "`sid` = %s", { "last_request": now() }, (token,))
-        conn.close()
+
+        if not reuse_conn:
+          conn.close()
 
         return Session(int(sr["uid"]), token)
 
-    conn.close()
+    if not reuse_conn:
+      conn.close()
 
   return None
