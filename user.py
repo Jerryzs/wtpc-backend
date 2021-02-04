@@ -9,6 +9,7 @@ from app import app
 from typing import Any, Callable, Dict, Mapping, Optional, Union
 
 MIN_USER_CODE = 1000
+MAX_USER_CODE = 9999
 
 def verify_id_token(token: str):
   try:
@@ -114,7 +115,7 @@ def user():
 
       def code(self, s: str) -> bool:
         s = int(s)
-        return not (s < MIN_USER_CODE or s > 9999)
+        return not (s < MIN_USER_CODE or s > MAX_USER_CODE)
 
       def url(self, s: str) -> bool:
         return bool(RegexPatterns.url.fullmatch(s))
