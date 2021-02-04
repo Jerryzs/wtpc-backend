@@ -109,14 +109,14 @@ def user():
       return noauth()
 
     class Validators():
-      def name(s: str) -> bool:
+      def name(self, s: str) -> bool:
         return bool(re.fullmatch(r"[a-zA-Z]{2,15}", s))
 
-      def code(s: str) -> bool:
+      def code(self, s: str) -> bool:
         s = int(s)
         return not (s < MIN_USER_CODE or s > 9999)
 
-      def url(s: str) -> bool:
+      def url(self, s: str) -> bool:
         return bool(RegexPatterns.url.fullmatch(s))
 
     allowed: Dict[str, Optional[Callable[[str], bool]]] = {
