@@ -13,7 +13,7 @@ from mysql.connector.pooling import PooledMySQLConnection
 class RegexPatterns(NamedTuple):
   url = re.compile(
     r"^"
-    r"(?:https?://)?"
+    r"(?:https?://)"
     r"(?:"
       r"(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+?"
       r"(?:[a-z]{2,6}\.?){1,2}"
