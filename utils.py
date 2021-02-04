@@ -117,15 +117,15 @@ class Conn:
       select=comma_separate_iter(cols, "`")\
         if cols else "*",
       table=table,
-      where=" WHERE %s" % (where)\
+      where="WHERE %s" % (where)\
         if where else "",
-      order=" ORDER BY %s" % (" ".join(order)) if order else "",
-      limit=" LIMIT %s" % (limit)\
+      order="ORDER BY %s" % (" ".join(order)) if order else "",
+      limit="LIMIT %s" % (limit)\
         if limit and type(limit) is int\
-        else " LIMIT %s,%s" % (limit[0], limit[1])\
+        else "LIMIT %s,%s" % (limit[0], limit[1])\
           if limit and type(limit) is tuple\
           else ""
-    )
+    ).strip()
 
     cursor.execute(query, params=params, multi=False)
 
