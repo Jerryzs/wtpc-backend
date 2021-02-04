@@ -157,6 +157,9 @@ def check():
   if not name:
     abort(400, "Query parameter 'name' is required.")
 
+  if code < MIN_USER_CODE or code > MAX_USER_CODE:
+    abort(400, "Code '%s' is invalid." % code)
+
   res = {
     "available": False
   }
