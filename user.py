@@ -48,7 +48,7 @@ def user():
       uid = int(uid)
       code = int(code)
     except ValueError:
-      return Response().fail().message("Invalid uid or code.").get()
+      abort(400, "Invalid uid or code.")
 
     conn = Conn("auth")
 
@@ -78,7 +78,7 @@ def user():
 
     if not user:
       conn.close()
-      return Response().fail().message("User not found.").get()
+      abort(400, "User not found.")
 
     res = user[0]
 
@@ -131,13 +131,13 @@ def user():
 
     for k in request.form.keys():
       if k not in allowed:
-        return Response().fail().message(f"Invalid Key: '{k}'").get()
+        abort(400, "Invalid Key: '%s'" % k)
 
       update = request.form.get(k, "", type=str).strip()
 
       if allowed[k] is not None:
         if not allowed[k](update):
-          return Response().fail().message(f"Incorrect Format: '{update}'").get()
+          abort(400, "Incorrect Format: '%s'" % update)
 
       updates[k] = update
 
@@ -154,7 +154,7 @@ def check():
   code = request.args.get("code", 0, int)
 
   if not name:
-    return Response().fail().message("Not enough arguments.").get()
+    abort(400, "Query parameter 'name' is required.")
 
   res = {
     "available": False
@@ -192,7 +192,7 @@ def auth():
   token = str(request.form.get("token", ""))
 
   if not token:
-    return Response().fail().message("Missing token or session id.").get()
+    abort(403, "Missing token or session information.")
 
   info = verify_id_token(token)
   if info:
@@ -248,4 +248,4 @@ def auth():
     return Response().data(res).session(sid).get()
 
   else:
-    return Response().fail().message("Token is invalid.").get()
+    abort(400, "Token is invalid.")

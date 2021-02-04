@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, abort
 from utils import Response, Conn
 from app import app
 
@@ -36,14 +36,13 @@ def forum():
 
     return Response().data(res).get()
   except Exception as e:
-    # raise e
-    return Response().fail().message(repr(e)).get()
+    raise e
 
 @app.route("/forum/posts", methods=["GET"])
 def posts():
   if request.method == "POST":
     # TODO
-    return Response().fail().get()
+    abort(405)
   else:
     block = request.args.get("block")
     page = int(request.args.get("page", 1))
